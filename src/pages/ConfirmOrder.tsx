@@ -1,7 +1,7 @@
 import { Navbar } from "../components";
 import LogoWasabi from "../assets/logo-wasabi.png";
 
-import { CreditCard, IdentificationCard, Phone } from "phosphor-react";
+import { Cards, CreditCard, IdentificationCard, Phone } from "phosphor-react";
 import MapIlustration from "../assets/map.svg";
 import { useLocalStorage } from "../utils/useLocalStorage";
 import { convertNumberToBrl } from "../helpers/convert-number-to-brl";
@@ -74,7 +74,7 @@ export function ConfirmOrder() {
         <main className="w-full flex flex-wrap justify-between max-md:justify-center">
           <div className="flex flex-col">
             <h1 className="text-[2.125rem] font-bold mt-[10px] mb-10">
-              Finalize seu pedido
+              Finalize seu pedido , {user?.clienteName}
             </h1>
 
             <div className="flex flex-col gap-5">
@@ -93,7 +93,7 @@ export function ConfirmOrder() {
 
                   <p className="my-1 text-gray-500 text-sm">Hoje, 35-45 min</p>
 
-                  <strong className="text-sm font-medium">R$ 0,00</strong>
+                  <strong className="text-sm font-medium">R$ 7,00</strong>
                 </div>
               </div>
 
@@ -101,6 +101,11 @@ export function ConfirmOrder() {
                 <span className="text-base text-lime-800">Dados da compra</span>
 
                 <div className="flex flex-col gap-2">
+                  <div className="flex gap-2 items-center">
+                    <Cards size={32} />
+                    <p>{user?.clienteEmail}</p>
+                  </div>
+
                   <div className="flex gap-2 items-center">
                     <CreditCard size={32} />
                     <p>{user?.clienteCartao}</p>
@@ -166,7 +171,7 @@ export function ConfirmOrder() {
 
                       <div className="flex justify-between text-gray-300">
                         <span>Frete</span>
-                        <span>{convertNumberToBrl(0)}</span>
+                        <span>{convertNumberToBrl(7)}</span>
                       </div>
 
                       <div className="flex justify-between">

@@ -81,6 +81,7 @@ export function SingUp() {
               </label>
               <input
                 id="email"
+                pattern="[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+"
                 value={userInfo.email}
                 onChange={(e) => {
                   setUserInfo((prev) => ({ ...prev, email: e.target.value }));
@@ -142,11 +143,12 @@ export function SingUp() {
               </label>
               <input
                 id="numero"
+                pattern="([0-9]{4,5})[-]?([0-9]{4})"
                 value={userInfo.numero}
                 onChange={(e) => {
                   setUserInfo((prev) => ({ ...prev, numero: e.target.value }));
                 }}
-                placeholder="99 9999 9999"
+                placeholder="9999 9999"
                 className="w-full rounded-md py-3 px-4 bg-gray-600 text-gray-100"
               />
             </div>
@@ -178,6 +180,8 @@ export function SingUp() {
               </label>
               <input
                 id="cpf"
+                maxLength={14}
+                pattern="([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})"
                 value={userInfo.cpf}
                 onChange={(e) => {
                   setUserInfo((prev) => ({ ...prev, cpf: e.target.value }));

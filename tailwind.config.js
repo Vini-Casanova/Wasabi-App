@@ -17,7 +17,6 @@ module.exports = {
       },
       animation: {
         sidebarAnim: 'all 0.25s linear',
-        menuAnim: '400ms',
       },
       plugins: [],
     },
