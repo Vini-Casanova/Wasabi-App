@@ -2,7 +2,7 @@ import { Navbar, Footer } from '../components/index'
 import foodIMG from '../assets/food-home.png'
 import { Link } from 'react-router-dom'
 
-export default function Home() {
+export function Home() {
   return (
     <>
       <Navbar />

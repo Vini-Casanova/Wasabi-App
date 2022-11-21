@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import wasabiLogo from "../assets/logo-wasabi.png";
 import { api } from "../services/api";
 
-export default function Login() {
+export function Login() {
   const navigate = useNavigate();
 
   const [user, setUserLocalStorage] = useLocalStorage("user", {});
@@ -14,19 +14,39 @@ export default function Login() {
     password: "",
   });
 
+  const [error, setError] = useState(false);
+
+  async function teste(e: FormEvent) {
+    e.preventDefault();
+    try {
+      api.get("/allClients").then((resp) => {
+        console.log(resp);
+      });
+    } catch (error) {
+      console.log("erro");
+    }
+  }
+
   async function handleLogin(e: FormEvent) {
     e.preventDefault();
-    let userTeste = false;
-    try {
-      api
-        .post("/login", { email: userInfo.email, password: userInfo.password })
-        .then(({ data }) => {
-          
-        });
-    } catch (error) {}
-    await setUserLocalStorage(userInfo);
 
-    return navigate("/delivery");
+    await api
+      .post(`/clientLogin/${userInfo.email}&${userInfo.password}`)
+      .then(({ data }) => {
+        let user = data;
+
+        if (!user) {
+          return setError(true);
+        }
+
+        if (user) {
+          setUserLocalStorage(data);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        return alert("Tente novamente");
+      });
   }
 
   useEffect(() => {
@@ -64,7 +84,11 @@ export default function Login() {
                   setUserInfo((prev) => ({ ...prev, email: e.target.value }));
                 }}
                 placeholder="johndoe@example.com"
-                className="w-full rounded-md py-3 px-4 bg-gray-600 text-gray-100"
+                className={
+                  error
+                    ? "w-full rounded-md py-3 px-4 bg-gray-600 text-gray-100 border-2 border-red-500"
+                    : "w-full rounded-md py-3 px-4 bg-gray-600 text-gray-100"
+                }
               />
             </div>
 
@@ -86,11 +110,15 @@ export default function Login() {
                   }));
                 }}
                 placeholder="***********"
-                className="w-full rounded-md py-3 px-4 bg-gray-600 text-gray-100"
+                className={
+                  error
+                    ? "w-full rounded-md py-3 px-4 bg-gray-600 text-gray-100 border-2 border-red-500"
+                    : "w-full rounded-md py-3 px-4 bg-gray-600 text-gray-100"
+                }
               />
             </div>
           </div>
-
+              {error&&(<span className=" self-center text-red-500 ">Informaçõs Incorretas</span>)}
           <button
             type="submit"
             className="w-full bg-lime-800 items-center rounded-md py-3 px-4 text-gray-100 text-base font-medium hover:bg-lime-600 transition-colors"

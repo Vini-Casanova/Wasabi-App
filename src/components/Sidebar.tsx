@@ -1,14 +1,15 @@
 /* eslint-disable no-undef */
-import { Tote } from 'phosphor-react'
-import { useContext } from 'react'
-import { SidebarContext } from '../context/SidebarContext'
-import { convertNumberToBrl } from '../helpers/convert-number-to-brl'
+import { Tote } from "phosphor-react";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { SidebarContext } from "../context/SidebarContext";
+import { convertNumberToBrl } from "../helpers/convert-number-to-brl";
 
 interface SidebarProps {
-  product: product[]
-  totalPrice: number
-  onRemoveProduct: (id: string) => void
-  onEditProduct: (product: product) => void
+  product: product[];
+  totalPrice: number;
+  onRemoveProduct: (id: number) => void;
+  onEditProduct: (product: product) => void;
 }
 
 export function Sidebar({
@@ -17,31 +18,37 @@ export function Sidebar({
   totalPrice,
   onEditProduct,
 }: SidebarProps) {
-  const { sidebar, toggleSidebar } = useContext(SidebarContext)
+  const navigate = useNavigate();
 
-  function handleDeleteProduct(id: string) {
-    onRemoveProduct(id)
+  const { sidebar, toggleSidebar } = useContext(SidebarContext);
+
+  function handleDeleteProduct(id: number) {
+    onRemoveProduct(id);
+  }
+
+  function ConfirmOrder() {
+    return navigate("/delivery/confirmorder");
   }
 
   return (
     <div
       className={
         sidebar
-          ? 'flex fixed justify-end right-0'
-          : 'flex fixed justify-end right-0 h-0'
+          ? "flex fixed justify-end right-0"
+          : "flex fixed justify-end right-0 h-0"
       }
     >
       <>
         <div
-          className={sidebar ? 'w-full h-full fixed' : ''}
-          onClick={() => (sidebar ? toggleSidebar() : '')}
+          className={sidebar ? "w-full h-full fixed" : ""}
+          onClick={() => (sidebar ? toggleSidebar() : "")}
           onMouseEnter={() => toggleSidebar()}
         />
         <aside
           className={
             sidebar
-              ? 'transition-all translate-x-0 flex relative justify-center w-[472px] shadow-lg bg-white h-screen max-sm:w-screen'
-              : 'transition-all translate-x-full flex relative justify-center w-[472px] shadow-lg bg-white h-screen'
+              ? "transition-all translate-x-0 flex relative justify-center w-[472px] shadow-lg bg-white h-screen max-sm:w-screen"
+              : "transition-all translate-x-full flex relative justify-center w-[472px] shadow-lg bg-white h-screen"
           }
         >
           <button
@@ -69,15 +76,18 @@ export function Sidebar({
                   {product.map((product) => {
                     return (
                       <div
-                        key={product.id}
+                        key={product.idProduto}
                         className="flex flex-col py-4 border-b border-gray-500"
                       >
                         <div className="flex justify-between my-2">
-                          <span className="text-base text-gray-900">
-                            {product.the_amount}x {product.title}
+                          <span className="text-base text-gray-500">
+                            {product.the_amount}x {product.nameProdudo}{" "}
+                            {convertNumberToBrl(product.precoProduto)}
                           </span>
                           <span className="text-base text-gray-900">
-                            {convertNumberToBrl(product.price)}
+                            {convertNumberToBrl(
+                              product.precoProduto * product.the_amount
+                            )}
                           </span>
                         </div>
                         <div className="flex gap-9 text-sm">
@@ -89,13 +99,15 @@ export function Sidebar({
                           </button>
                           <button
                             className="hover:text-gray-100 transition-colors"
-                            onClick={() => handleDeleteProduct(product.id)}
+                            onClick={() =>
+                              handleDeleteProduct(product.idProduto)
+                            }
                           >
                             Remover
                           </button>
                         </div>
                       </div>
-                    )
+                    );
                   })}
                 </div>
               </div>
@@ -103,14 +115,9 @@ export function Sidebar({
               <div className="mb-28 w-[408px] max-sm:w-full">
                 <div className="flex justify-between mb-4">
                   <span>Total</span>
-                  <span>
-                    {new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    }).format(totalPrice)}
-                  </span>
+                  <span>{convertNumberToBrl(totalPrice)}</span>
                 </div>
-                <button className="w-full bg-lime-800 items-center rounded-md py-3 px-4 text-gray-100 text-base font-medium hover:bg-lime-600 transition-colors">
+                <button className="w-full bg-lime-800 items-center rounded-md py-3 px-4 text-gray-100 text-base font-medium hover:bg-lime-600 transition-colors" onClick={ConfirmOrder}>
                   Comprar
                 </button>
               </div>
@@ -119,5 +126,5 @@ export function Sidebar({
         </aside>
       </>
     </div>
-  )
+  );
 }
