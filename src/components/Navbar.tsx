@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as Popover from "@radix-ui/react-popover";
-import { Power, Tote, User } from "phosphor-react";
+import { Article, Power, Tote, User } from "phosphor-react";
 
 import { SidebarContext } from "../context/SidebarContext";
 import { convertNumberToBrl } from "../helpers/convert-number-to-brl";
@@ -33,12 +33,9 @@ export function Navbar({
 }: NavbarProps) {
   const navigate = useNavigate();
   const [user, setUser] = useState<UserProps>();
-  const [userLocalStorage, setUserLocalStorage] = useLocalStorage('user', {})
+  const [userLocalStorage, setUserLocalStorage] = useLocalStorage("user", {});
 
-
-  // eslint-disable-next-line no-unused-vars
   const { sidebar, toggleSidebar } = useContext(SidebarContext);
-  // eslint-disable-next-line no-unused-vars
   let location = useLocation();
 
   //console.log(location);
@@ -47,18 +44,27 @@ export function Navbar({
     return navigate("/");
   }
 
+  function order() {
+    return navigate("/delivery/orders");
+  }
+
   function home() {
     return navigate("/");
   }
 
   useEffect(() => {
     setUser(userLocalStorage as UserProps);
-  },[])
+  }, []);
 
   return (
-    <div className="w-screen h-20 flex sticky top-0 bg-white items-center justify-between px-20 max-md:px-4">
+    <div className="w-screen h-20 flex sticky top-0 backdrop-blur-[18px] shadow-md items-center justify-between px-20 max-md:px-4">
       <div className="flex items-center gap-1">
-        <img src={LogoWasabi} alt="" className="w-14 h-14 hover:bg-gray-500 rounded" onClick={home} />
+        <img
+          src={LogoWasabi}
+          alt=""
+          className="w-14 h-14 hover:bg-gray-500 rounded"
+          onClick={home}
+        />
         <h1 className="text-gray-900 text-xl font-bold">Wasabi Sushi</h1>
       </div>
 
@@ -73,24 +79,27 @@ export function Navbar({
             <Popover.Portal>
               <Popover.Content className="h-36 w-60 p-4 bg-gray-50 shadow-lg">
                 <div className="flex flex-col justify-between h-full">
-                  <div className="flex flex-col gap-4">
-                    {user && (
-                      <>
-                        <p className="text-sm">Olá {user.clienteName} </p>
-                        <p className="text-sm">
-                          Endereço: {user.clienteEndereco}
-                        </p>
-                        <p className="text-sm">Numero: {user.clienteNumero} </p>
-                      </>
-                    )}
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm">Olá {user?.clienteName} </p>
+                    <p className="text-sm">Endereço: {user?.clienteEndereco}</p>
+                    <p className="text-sm">Numero: {user?.clienteNumero} </p>
                   </div>
-                  <button
-                    className="flex gap-2 max-w-fit hover:text-gray-100 transition-colors"
-                    onClick={logout}
-                  >
-                    <Power size={24} />
-                    Sair
-                  </button>
+                  <div className="flex justify-between w-full">
+                    <button
+                      className="flex gap-2 max-w-fit hover:text-gray-100 transition-colors"
+                      onClick={logout}
+                    >
+                      <Power size={24} />
+                      Sair
+                    </button>
+                    <button
+                      className="flex gap-2 max-w-fit hover:text-gray-100 transition-colors"
+                      onClick={order}
+                    >
+                      <Article size={24} />
+                      Historico
+                    </button>
+                  </div>
                 </div>
               </Popover.Content>
             </Popover.Portal>

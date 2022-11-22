@@ -4,7 +4,8 @@ import { Login } from "../pages/Login";
 import { SingUp } from "../pages/SignUp";
 import { Home } from "../pages/Home";
 import { Delivery } from "../pages/Delivery";
-import { ConfirmOrder } from "../pages/ConfirmOrder"
+import { ConfirmOrder } from "../pages/ConfirmOrder";
+import { Orders } from "../pages/Orders";
 import { NotFound } from "../pages/NotFound";
 
 import { PrivateRoute } from "../helpers/PrivateRoute";
@@ -30,6 +31,15 @@ export function Router() {
         element={
           <PrivateRoute>
             <ConfirmOrder />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/delivery/Orders"
+        element={
+          <PrivateRoute>
+            <Orders />
           </PrivateRoute>
         }
       />

@@ -10,4 +10,11 @@ export declare global {
     the_amount: number
     urlProduto?: string
   }
+
+  export interface orders {
+    idPagamento?: number,
+    idCliente?: number,
+    idProduto?: number,
+    quantidade?: number,
+  }
 }

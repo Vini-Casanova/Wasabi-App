@@ -20,7 +20,7 @@ export function Login() {
     e.preventDefault();
     try {
       api.get("/allClients").then((resp) => {
-        console.log(resp);
+        //console.log(resp);
       });
     } catch (error) {
       console.log("erro");
